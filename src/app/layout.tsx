@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Providers } from './providers';
+import { AuthInitializer } from '@/components/AuthInitializer/AuthInitializer';
 
 export const metadata: Metadata = {
   title: 'Language Learning Platform',
@@ -11,7 +12,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <AuthInitializer />
+          {children}
+        </Providers>
       </body>
     </html>
   );

@@ -3,6 +3,11 @@
 import styled from 'styled-components';
 import { lessons } from '@/data/lessons';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { RootState } from '@/store';
+import { LogoutButton } from '@/components/LogoutButton/LogoutButton';
 
 const Wrapper = styled.div`
   max-width: 800px;
@@ -28,11 +33,21 @@ const LessonTitle = styled.h3`
   }
 `;
 
-
 export default function LessonsPage() {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const initialized = useSelector((state: RootState) => state.auth.initialized);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (initialized && !user) {
+      router.push('/login');
+    }
+  }, [initialized, user, router]);
+
   return (
     <Wrapper>
       <h2>All Lessons</h2>
+      <LogoutButton />
       {lessons.map((lesson) => (
         <LessonCard key={lesson.id}>
           <Link href={`/lessons/${lesson.id}`}>

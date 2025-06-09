@@ -1,10 +1,10 @@
 'use client';
 
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/navigation';
-import { setName } from '@/store/features/userSlice';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { login } from '@/store/slices/authSlice';
+import { useRouter } from 'next/navigation';
 
 const Wrapper = styled.div`
   max-width: 400px;
@@ -12,25 +12,26 @@ const Wrapper = styled.div`
   padding: 2rem;
   background: #fff;
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 `;
 
 const Input = styled.input`
+  display: block;
   width: 100%;
   padding: 0.75rem;
   margin-top: 1rem;
-  border: 1px solid #ccc;
   border-radius: 0.5rem;
+  border: 1px solid #ccc;
 `;
 
 const Button = styled.button`
-  margin-top: 1.5rem;
-  width: 100%;
-  padding: 0.75rem;
+  margin-top: 2rem;
   background-color: #3b82f6;
   color: white;
-  border: none;
+  font-size: 1rem;
+  padding: 0.75rem 2rem;
   border-radius: 0.5rem;
+  border: none;
   cursor: pointer;
 
   &:hover {
@@ -39,26 +40,37 @@ const Button = styled.button`
 `;
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
 
   const handleLogin = () => {
-    if (username.trim()) {
-      dispatch(setName(username));
-      router.push('/profile');
+    console.log('logging in with:', name, email);
+
+    if (!name.trim() || !email.trim()) {
+      alert('Please enter both name and email');
+      return;
     }
+
+    dispatch(login({ name, email }));
+    router.push('/lessons');
   };
 
   return (
     <Wrapper>
       <h2>Login</h2>
-      <label>Enter your name:</label>
       <Input
         type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="e.g. Karol"
+        placeholder="Your name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Input
+        type="email"
+        placeholder="Your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <Button onClick={handleLogin}>Log In</Button>
     </Wrapper>
