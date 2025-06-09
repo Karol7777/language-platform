@@ -1,7 +1,8 @@
 'use client';
 
 import styled from 'styled-components';
-
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 const Wrapper = styled.section`
   text-align: center;
   padding: 4rem 2rem;
@@ -34,10 +35,17 @@ const Button = styled.button`
   }
 `;
 
-export const HomeHeader = () => (
-  <Wrapper>
-    <Title>Language Learning Platform</Title>
-    <Subtitle>Learn languages easily!</Subtitle>
-    <Button>Get Started</Button>
-  </Wrapper>
-);
+export const HomeHeader = () => {
+  const router = useRouter();
+
+  return (
+    <Wrapper>
+      <Title>Language Learning Platform</Title>
+      <Subtitle>Learn languages easily!</Subtitle>
+      <Button onClick={() => router.push('/login')}>Get Started</Button>
+
+      <Link href="/lessons">
+        <Button>Browse Lessons</Button>
+      </Link>    </Wrapper>
+  );
+};
